@@ -54,7 +54,6 @@ async function loadProjects() {
     // 閉じるボタン動作
     closeBtn.addEventListener("click", () => {
 
-        const description = document.getElementById("app-description");
         const container = document.querySelector(".app-display");
 
 
