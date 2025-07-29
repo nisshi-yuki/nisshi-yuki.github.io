@@ -14,9 +14,13 @@ async function loadProjects() {
         return;
     }
 
+    const defaultDescription = "表示する作品を選択してください。";
+
     const listElement = document.getElementById("project-list");
     const description = document.getElementById("app-description");
     const closeBtn = document.getElementById("close-app-btn");
+
+    description.textContent = defaultDescription;
 
     for (const project of projects) {
         const li = document.createElement("li");
@@ -70,7 +74,7 @@ async function loadProjects() {
         container.insertBefore(newIframe, description);
 
         // 説明初期化
-        description.textContent = "表示する作品を選択してください。";
+        description.textContent = defaultDescription;
 
         // ボタン非表示
         closeBtn.style.display = "none";
