@@ -57,8 +57,9 @@ aside a {
 }
 
 .app-display iframe {
-    width: 1120px;
-    height: 630px;
+    width: 100%;
+    max-width: 1120px;
+    aspect-ratio: 16 / 9;
     border: 1px solid #ccc;
     display: block;
     margin: 0 auto;
