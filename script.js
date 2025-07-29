@@ -19,10 +19,18 @@ async function loadProjects() {
     const defaultDescription = "表示する作品を選択してください。";
     const defaultTitle = "Unity Webアプリ";
 
+    function setIframe(frame) {
+        frame.id = "app-frame";
+        frame.allowFullscreen = true;
+        frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-popups");
+    }
+
     const description = document.getElementById("app-description");
     const closeBtn = document.getElementById("close-app-btn");
     const initIFrame = document.getElementById("app-frame");
     initIFrame.title = defaultTitle;
+    initIFrame.src = "";
+    setIframe(initIFrame);
 
     description.textContent = defaultDescription;
 
@@ -49,7 +57,7 @@ async function loadProjects() {
 
                 closeBtn.style.display = "block"; // ボタンを表示
             } catch (error) {
-                console.error("Error fetching project description:", error);
+                console.error("プロジェクト説明の取得エラー:", error);
                 description.textContent = "プロジェクトの説明の読み込みに失敗しました。";
                 closeBtn.style.display = "none"; // ボタンを非表示
                 iframe.src = ""; // iframeを非表示状態にする
@@ -77,10 +85,9 @@ async function loadProjects() {
         }
 
         const newIframe = document.createElement("iframe");
-        newIframe.id = "app-frame";
-        newIframe.allowFullscreen = true;
         newIframe.src = ""; // 非表示状態 or 未設定
         newIframe.title = defaultTitle;
+        setIframe(newIframe);
 
         container.insertBefore(newIframe, description);
 
