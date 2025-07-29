@@ -27,6 +27,8 @@ async function loadProjects() {
         a.addEventListener("click", async (e) => {
             e.preventDefault();
 
+            const iframe = document.getElementById("app-frame");
+
             try {
                 const descRes = await fetch(project.description);
                 if (!descRes.ok) {
@@ -34,7 +36,6 @@ async function loadProjects() {
                 }
                 description.textContent = await descRes.text();
 
-                const iframe = document.getElementById("app-frame");
                 iframe.src = project.url;
 
                 closeBtn.style.display = "block"; // ボタンを表示
