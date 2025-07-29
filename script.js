@@ -1,5 +1,7 @@
 async function loadProjects() {
 
+    const listElement = document.getElementById("project-list");
+
     let projects = [];
     try {
         const res = await fetch("projects.json");
@@ -9,16 +11,18 @@ async function loadProjects() {
         projects = await res.json();
     } catch (error) {
         console.error("projects.jsonの読み込みエラー:", error);
-        const listElement = document.getElementById("project-list");
-        listElement.innerHTML = "<p>プロジェクトの読み込みに失敗しました。</p>";
+
+        listElement.textContent = "プロジェクトの読み込みに失敗しました。";
         return;
     }
 
     const defaultDescription = "表示する作品を選択してください。";
+    const defaultTitle = "Unity Webアプリ";
 
-    const listElement = document.getElementById("project-list");
     const description = document.getElementById("app-description");
     const closeBtn = document.getElementById("close-app-btn");
+    const initIFrame = document.getElementById("app-frame");
+    initIFrame.title = defaultTitle;
 
     description.textContent = defaultDescription;
 
@@ -41,6 +45,7 @@ async function loadProjects() {
                 description.textContent = await descRes.text();
 
                 iframe.src = project.url;
+                iframe.title = project.title;
 
                 closeBtn.style.display = "block"; // ボタンを表示
             } catch (error) {
@@ -60,6 +65,11 @@ async function loadProjects() {
 
         const container = document.querySelector(".app-display");
 
+        if (!container) {
+            console.error(".app-displayは見つかりませんでした。");
+            return;
+        }
+
 
         const oldIframe = document.getElementById("app-frame");
         if (oldIframe) {
@@ -70,6 +80,7 @@ async function loadProjects() {
         newIframe.id = "app-frame";
         newIframe.allowFullscreen = true;
         newIframe.src = ""; // 非表示状態 or 未設定
+        newIframe.title = defaultTitle;
 
         container.insertBefore(newIframe, description);
 
