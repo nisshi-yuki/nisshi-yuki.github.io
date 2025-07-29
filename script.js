@@ -22,7 +22,7 @@ async function loadProjects() {
     function setIframe(frame) {
         frame.id = "app-frame";
         frame.allowFullscreen = true;
-        frame.setAttribute("sandbox", "allow-scripts allow-same-origin");
+        frame.setAttribute("sandbox", "allow-scripts allow-popups");
     }
 
     const description = document.getElementById("app-description");
