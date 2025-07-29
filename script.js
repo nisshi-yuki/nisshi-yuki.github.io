@@ -22,14 +22,14 @@ async function loadProjects() {
     function setIframe(frame) {
         frame.id = "app-frame";
         frame.allowFullscreen = true;
-        frame.setAttribute("sandbox", "allow-scripts allow-popups");
+        frame.setAttribute("sandbox", "allow-scripts allow-same-origin");
     }
 
     const description = document.getElementById("app-description");
     const closeBtn = document.getElementById("close-app-btn");
     const initIFrame = document.getElementById("app-frame");
     initIFrame.title = defaultTitle;
-    initIFrame.src = "";
+    initIFrame.src = "about:blank";
     setIframe(initIFrame);
 
     description.textContent = defaultDescription;
@@ -60,7 +60,7 @@ async function loadProjects() {
                 console.error("プロジェクト説明の取得エラー:", error);
                 description.textContent = "プロジェクトの説明の読み込みに失敗しました。";
                 closeBtn.style.display = "none"; // ボタンを非表示
-                iframe.src = ""; // iframeを非表示状態にする
+                iframe.src = "about:blank"; // iframeを非表示状態にする
             }
         });
 
