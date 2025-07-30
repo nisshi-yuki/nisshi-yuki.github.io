@@ -51,7 +51,7 @@ async function loadProjects() {
         newIframe.title = defaultTitle;
         setIframe(newIframe);
 
-        container.insertBefore(newIframe, closeBtn, description);
+        container.insertBefore(newIframe, closeBtn);
 
         // 説明初期化
         description.textContent = defaultDescription;
@@ -75,7 +75,7 @@ async function loadProjects() {
 
             let iframe = document.getElementById("app-frame");
 
-            if (iframe == null || iframe.src != "" && iframe.src != "about:blank") { 
+            if (iframe === null || iframe.src !== "" && iframe.src !== "about:blank") { 
                 resetIframe();
                 iframe = document.getElementById("app-frame");
             }
