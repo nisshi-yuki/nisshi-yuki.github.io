@@ -331,7 +331,7 @@
         <div class="container">
             <article class="hero-card reveal">
                 <h1 class="section-title">Unityの個人作品を掲載しています</h1>
-                <p class="muted">Unity（UI Toolkit, Addressables, Shader Graph）での個人制作・検証を掲載しています。以下のボタンから作品を読み込み、下のビューアで即試遊できます。</p>
+                <p class="muted">Unity（UI Toolkit, Addressables, Shader Graph）での個人制作・検証を掲載しています。以下のボタンから作品を読み込み、下のビューアで試遊します。</p>
                 <div class="socials" aria-label="social links">
                     <a class="chip" href="https://github.com/nisshi-yuki" target="_blank" rel="noopener">
                         <span>GitHub</span>
@@ -350,24 +350,23 @@
     <section id="viewerSection">
         <div class="container">
             <h2 class="section-title" style="font-size:20px">作品ビューア</h2>
-            <div class="viewer-grid">
+            <div class="viewer-wrap">
+                <div class="viewer-toolbar">
+                    <div>
+                        <button id="btn-open" class="btn" disabled>読み込み</button>
+                        <button id="btn-close" class="btn" disabled>閉じる</button>
+                    </div>
+                    <div class="muted" id="viewer-status">未選択</div>
+                </div>
+                <div id="viewer" class="viewer" aria-live="polite" aria-busy="false"></div>
+    
                 <aside class="text-panel" aria-live="polite">
                     <div class="text-head">
                         <div class="text-title" id="text-title">説明（未選択）</div>
                         <button id="btn-open-text" class="btn" disabled>テキスト再読込</button>
                     </div>
-                    <div id="text-body" class="text-body muted">作品を選択すると、ここにテキスト説明（.txt）が表示されます。</div>
+                    <div id="text-body" class="text-body muted">作品を選択してください。</div>
                 </aside>
-                <div class="viewer-wrap">
-                    <div class="viewer-toolbar">
-                        <div>
-                            <button id="btn-open" class="btn" disabled>読み込み</button>
-                            <button id="btn-close" class="btn" disabled>閉じる</button>
-                        </div>
-                        <div class="muted" id="viewer-status">未選択</div>
-                    </div>
-                    <div id="viewer" class="viewer" aria-live="polite" aria-busy="false"></div>
-                </div>
             </div>
         </div>
     </section>
