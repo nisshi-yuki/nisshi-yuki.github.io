@@ -458,11 +458,10 @@
                 return;
             }
             const proj = state.projects[idx];
-            if (!proj?.url){
+            if (!proj?.url) {
                 return;
             }
-            if (state.iframe) 
-            {
+            if (state.iframe) {
                 closeViewer();
             }
             const iframe = document.createElement('iframe');
