@@ -3,5 +3,10 @@
     "title": "InputMove2D",
     "url": "apps/input_move_2d/index.html",
     "description": "texts/input_move_2d.txt"
+  },
+  {
+    "title": "息抜き",
+    "url": "apps/story_2d/index.html",
+    "description": "texts/story_2d.txt"
   }
 ]

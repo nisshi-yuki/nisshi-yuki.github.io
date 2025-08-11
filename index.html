@@ -415,9 +415,13 @@
         async function loadProjects() {
             try {
                 const res = await fetch('projects.json', { cache: 'no-store' });
-                if (!res.ok) throw new Error(`projects.json の読み込みに失敗: ${res.status}`);
+                if (!res.ok) {
+                    throw new Error(`projects.json の読み込みに失敗: ${res.status}`);
+                }
                 const data = await res.json();
-                if (!Array.isArray(data)) throw new Error('projects.json は配列である必要があります');
+                if (!Array.isArray(data)) {
+                    throw new Error('projects.json は配列である必要があります');
+                }
                 state.projects = data;
                 renderProjectCards();
             } catch (err) {
@@ -457,6 +461,7 @@
                 title.textContent = p.title || 'Untitled';
                 const desc = document.createElement('div');
                 desc.className = 'proj-desc';
+
                 desc.textContent = p.description || '';
                 meta.appendChild(title);
                 meta.appendChild(desc);
@@ -468,7 +473,9 @@
         }
 
         function selectProject(index) {
-            if (index === state.selectedIndex) return;
+            if (index === state.selectedIndex) {
+                return;
+            }
             const cards = projectsGrid.querySelectorAll('.proj-card');
             cards.forEach((c, i) => {
                 c.classList.toggle('active', i === index);
@@ -482,8 +489,9 @@
         }
 
         function closeViewer() {
-            if (!state.iframe) return;
-            try { state.iframe.contentWindow?.postMessage({ type: 'QUIT' }, '*'); } catch { }
+            if (!state.iframe) {
+                return;
+            }
             state.iframe.src = 'about:blank';
             state.iframe.remove();
             state.iframe = null;
@@ -493,11 +501,17 @@
 
         function openSelected() {
             const idx = state.selectedIndex;
-            if (idx < 0) return;
+            if (idx < 0) {
+                return;
+            }
             const proj = state.projects[idx];
-            if (!proj?.url) return;
-            if (state.iframe) closeViewer();
-
+            if (!proj?.url){
+                return;
+            }
+            if (state.iframe) 
+            {
+                closeViewer();
+            }
             const iframe = document.createElement('iframe');
             iframe.setAttribute('allow', 'autoplay; fullscreen');
             iframe.setAttribute('loading', 'eager');
