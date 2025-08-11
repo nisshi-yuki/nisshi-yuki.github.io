@@ -206,6 +206,42 @@
             min-height: 1.6em;
         }
 
+        .viewer-grid {
+            display:grid;
+            grid-template-columns:minmax(260px,1fr) 2fr;
+            gap:16px
+        }
+        @media (max-width: 900px) {
+            .viewer-grid{grid-template-columns:1fr;}}
+
+        .text-panel,.viewer {
+            border-radius:var(--radius);
+            border:1px solid rgba(255,255,255,.08);
+            background:linear-gradient(180deg,var(--panel),var(--panel-2));
+            box-shadow:var(--shadow)
+        }
+        .text-panel {
+            display:grid;
+            grid-template-rows:auto 1fr
+        }
+        .text-head {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:12px 14px;
+            border-bottom:1px solid rgba(255,255,255,.06)
+        }
+        .text-title {
+            font-weight:700
+        }
+        .text-body {
+            padding:14px;
+            max-height:min(70vh,820px);
+            overflow:auto;
+            white-space:pre-wrap;
+            word-break:break-word
+        }
+
         .viewer-wrap {
             display: grid;
             gap: 12px;
@@ -295,7 +331,7 @@
         <div class="container">
             <article class="hero-card reveal">
                 <h1 class="section-title">Unityの個人作品を掲載しています</h1>
-                <p class="muted">Unity（UI Toolkit, Addressables, Shader Graph）での個人制作・検証を掲載しています。以下のボタンから作品を読み込み、下のビューアで即試遊できます。</p>
+                <p class="muted">Unity（UI Toolkit, Addressables, Shader Graph）での個人制作・検証を掲載しています。以下のボタンから作品を読み込み、下のビューアで試遊します。</p>
                 <div class="socials" aria-label="social links">
                     <a class="chip" href="https://github.com/nisshi-yuki" target="_blank" rel="noopener">
                         <span>GitHub</span>
@@ -316,15 +352,21 @@
             <h2 class="section-title" style="font-size:20px">作品ビューア</h2>
             <div class="viewer-wrap">
                 <div class="viewer-toolbar">
-                    <div class="toolbar-left">
+                    <div>
                         <button id="btn-open" class="btn" disabled>読み込み</button>
                         <button id="btn-close" class="btn" disabled>閉じる</button>
                     </div>
-                    <div class="toolbar-right muted" id="viewer-status">未選択</div>
+                    <div class="muted" id="viewer-status">未選択</div>
                 </div>
-                <div id="viewer" class="viewer" aria-live="polite" aria-busy="false">
-                    <!-- iframe をここに挿入する -->
-                </div>
+                <div id="viewer" class="viewer" aria-live="polite" aria-busy="false"></div>
+    
+                <aside class="text-panel" aria-live="polite">
+                    <div class="text-head">
+                        <div class="text-title" id="text-title">説明（未選択）</div>
+                        <button id="btn-open-text" class="btn" disabled>テキスト再読込</button>
+                    </div>
+                    <div id="text-body" class="text-body muted">作品を選択してください。</div>
+                </aside>
             </div>
         </div>
     </section>
@@ -358,12 +400,14 @@
         document.getElementById('y').textContent = new Date().getFullYear();
 
         const state = { projects: [], selectedIndex: -1, iframe: null };
-
         const projectsGrid = document.getElementById('projectsGrid');
         const viewer = document.getElementById('viewer');
         const viewerStatus = document.getElementById('viewer-status');
         const btnOpen = document.getElementById('btn-open');
         const btnClose = document.getElementById('btn-close');
+        const btnOpenText = document.getElementById('btn-open-text');
+        const textTitle = document.getElementById('text-title');
+        const textBody = document.getElementById('text-body');
 
         async function loadProjects() {
             try {
@@ -439,6 +483,29 @@
             viewerStatus.textContent = `選択中: ${proj.title}`;
             btnOpen.disabled = false;
             btnClose.disabled = !state.iframe;
+            loadProjectText(proj);
+        }
+
+        async function loadProjectText(proj) {
+            const url = proj.textUrl || '';
+            textTitle.textContent = `説明：${proj.title}`;
+            if (!url) {
+                textBody.textContent = '説明テキストのURL(textUrl)が設定されていません。'; 
+                return; 
+            }
+            textBody.textContent = '読み込み中...';
+            try {
+                const res = await fetch(url, { cache: 'no-store' });
+                if (!res.ok)
+                {
+                    throw new Error(`${url} の読み込みに失敗: ${res.status}`);
+                }
+                const txt = await res.text();
+                textBody.textContent = txt;
+            } catch (err) {
+                console.error(err);
+                textBody.textContent = 'テキストの読み込みに失敗しました。パスとCORS設定を確認してください。';
+            }
         }
 
         function closeViewer() {
