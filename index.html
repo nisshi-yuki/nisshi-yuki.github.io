@@ -2,47 +2,489 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>にしーのページ</title>
-    <link rel="stylesheet" href="style.css" />
+    <style>
+
+        :root {
+            --bg: #0b0e14;
+            --panel: #121722;
+            --panel-2: #0f1420;
+            --text: #e6e9ef;
+            --muted: #9aa0aa;
+            --brand: #5aa1ff;
+            --accent: #5ee1a1;
+            --radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+            --maxw: 1100px;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            color: var(--text);
+            background: linear-gradient(180deg, var(--bg), #0b0e14 40%, #0a0d13 100%);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--brand);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: saturate(140%) blur(8px);
+            background: rgba(15, 20, 32, .75);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .nav {
+            margin: 0 auto;
+            max-width: var(--maxw);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+        }
+
+        .brand {
+            font-weight: 700;
+            letter-spacing: .3px;
+        }
+
+        .nav a.btn {
+            display: inline-flex;
+            gap: .5rem;
+            align-items: center;
+            padding: .55rem .9rem;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 999px;
+            background: linear-gradient(180deg, #162033, #0f172a);
+        }
+
+        section {
+            padding: 64px 18px;
+        }
+
+        .container {
+            max-width: var(--maxw);
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(22px, 2.6vw, 32px);
+            margin: 0 0 18px;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .hero {
+            padding-top: 72px;
+            padding-bottom: 48px;
+            background: radial-gradient(800px 250px at 50% -30px, rgba(90, 161, 255, .15), transparent 70%), linear-gradient(180deg, rgba(255, 255, 255, .03), transparent 20%);
+        }
+
+        .hero-card {
+            background: linear-gradient(180deg, var(--panel), var(--panel-2));
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .socials {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: linear-gradient(180deg, #151c2b, #121826);
+            transition: transform .15s ease;
+        }
+
+        .chip:hover {
+            transform: translateY(-1px);
+        }
+
+        .chip svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .proj-card {
+            display: grid;
+            grid-template-rows: 140px auto;
+            gap: 10px;
+            padding: 12px;
+            border-radius: calc(var(--radius) - 6px);
+            border: 1px solid rgba(255, 255, 255, .06);
+            background: linear-gradient(180deg, #121826, #0f1522);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease;
+        }
+
+        .proj-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, .45);
+        }
+
+        .proj-card.active {
+            border-color: rgba(94, 225, 161, .55);
+            box-shadow: 0 0 0 2px rgba(94, 225, 161, .25) inset;
+        }
+
+        .thumb {
+            border-radius: 12px;
+            background: #0b101a;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .thumb .noimg {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .proj-meta {
+            display: grid;
+            gap: 2px;
+        }
+
+        .proj-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text);
+        }
+
+        .proj-desc {
+            color: var(--muted);
+            font-size: 12px;
+            min-height: 1.6em;
+        }
+
+        .viewer-wrap {
+            display: grid;
+            gap: 12px;
+        }
+
+        .viewer {
+            position: relative;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: repeating-linear-gradient(45deg, #0e1422, #0e1422 10px, #0c1220 10px, #0c1220 20px);
+            min-height: 480px;
+            overflow: clip;
+            box-shadow: var(--shadow);
+        }
+
+        .viewer iframe {
+            width: 100%;
+            height: min(70vh, 820px);
+            border: 0;
+            display: block;
+            background: #000;
+        }
+
+        .viewer-toolbar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toolbar-left,
+        .toolbar-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, .1);
+            background: linear-gradient(180deg, #141b2a, #0f1523);
+            color: var(--text);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity .45s ease, transform .45s ease;
+        }
+
+        .reveal.reveal-in {
+            opacity: 1;
+            transform: none;
+        }
+
+        footer {
+            padding: 48px 18px;
+            text-align: center;
+            color: var(--muted);
+        }
+    </style>
 </head>
 
 <body>
+
     <header>
-        <h1>にしーのページ</h1>
-        <nav class="social-links">
-            <a href="https://x.com/nishi_game_dev" target="_blank">X(旧:Twitter)</a>
-            <a href="https://nisshi-11.hatenablog.com/" target="_blank">はてなブログ</a>
-            <a href="https://github.com/nisshi-yuki" target="_blank">GitHub</a>
-        </nav>
+        <div class="nav">
+            <div class="brand">Takayuki Nakanishi (にしー)</div>
+            <nav>
+                <a class="btn" href="#projects">作品一覧へ</a>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <aside>
-            <h2>個人制作</h2>
-                <ul id="project-list">
-                </ul>
-        </aside>
-        <section class="empty-display">
-            <div class="app-empty" id="app-empty" style="width: 1120px; height: 630px;">
-            </div>
-            <div class="app-description" id="app-description">
-            </div>
-        </section>
+    <section class="hero">
+        <div class="container">
+            <article class="hero-card reveal">
+                <h1 class="section-title">Unityの個人作品を掲載しています</h1>
+                <p class="muted">Unity（UI Toolkit, Addressables, Shader Graph）での個人制作・検証を掲載しています。以下のボタンから作品を読み込み、下のビューアで即試遊できます。</p>
+                <div class="socials" aria-label="social links">
+                    <a class="chip" href="https://github.com/nisshi-yuki" target="_blank" rel="noopener">
+                        <span>GitHub</span>
+                    </a>
+                    <a class="chip" href="https://x.com/nishi_game_dev" target="_blank" rel="noopener">
+                        <span>X (Twitter)</span>
+                    </a>
+                    <a class="chip" href="https://nisshi-11.hatenablog.com/">
+                        <span>はてなブログ</span>
+                    </a>
+                </div>
+            </article>
+        </div>
+    </section>
 
-        <section class="app-display">
-            <iframe id="app-frame" src="" allowfullscreen></iframe>
-            <button id="close-app-btn" style="display: none;">作品を閉じる</button>
-            <div class="app-description" id="app-description">
+    <section id="viewerSection">
+        <div class="container">
+            <h2 class="section-title" style="font-size:20px">作品ビューア</h2>
+            <div class="viewer-wrap">
+                <div class="viewer-toolbar">
+                    <div class="toolbar-left">
+                        <button id="btn-open" class="btn" disabled>読み込み</button>
+                        <button id="btn-close" class="btn" disabled>閉じる</button>
+                    </div>
+                    <div class="toolbar-right muted" id="viewer-status">未選択</div>
+                </div>
+                <div id="viewer" class="viewer" aria-live="polite" aria-busy="false">
+                    <!-- iframe をここに挿入する -->
+                </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">作品一覧</h2>
+            <p class="muted" style="margin-top:-8px">クリックすると上のビューアに読み込みます。</p>
+            <div id="projectsGrid" class="projects-grid reveal" aria-live="polite"></div>
+        </div>
+    </section>
 
     <footer>
-        <p>&copy; 2025 Takayuki Nakanishi (にしー)</p>
+        © <span id="y"></span> Takayuki Nakanishi. All rights reserved.
     </footer>
-    <script src="script.js"></script>
+
+    <script>
+
+        const io = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('reveal-in');
+                    io.unobserve(e.target);
+                }
+            }
+        }, { threshold: .15 });
+        for (const el of document.querySelectorAll('.reveal')) {
+            io.observe(el);
+        }
+
+        document.getElementById('y').textContent = new Date().getFullYear();
+
+        const state = { projects: [], selectedIndex: -1, iframe: null };
+
+        const projectsGrid = document.getElementById('projectsGrid');
+        const viewer = document.getElementById('viewer');
+        const viewerStatus = document.getElementById('viewer-status');
+        const btnOpen = document.getElementById('btn-open');
+        const btnClose = document.getElementById('btn-close');
+
+        async function loadProjects() {
+            try {
+                const res = await fetch('projects.json', { cache: 'no-store' });
+                if (!res.ok) {
+                    throw new Error(`projects.json の読み込みに失敗: ${res.status}`);
+                }
+                const data = await res.json();
+                if (!Array.isArray(data)) {
+                    throw new Error('projects.json は配列である必要があります');
+                }
+                state.projects = data;
+                renderProjectCards();
+            } catch (err) {
+                console.error(err);
+                projectsGrid.innerHTML = `<div class="muted">JSON の読み込みに失敗しました。projects.json を確認してください。</div>`;
+            }
+        }
+
+        function renderProjectCards() {
+            projectsGrid.innerHTML = '';
+            state.projects.forEach((p, idx) => {
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.className = 'proj-card';
+                card.setAttribute('aria-pressed', 'false');
+                card.addEventListener('click', () => selectProject(idx));
+
+                const thumb = document.createElement('div');
+                thumb.className = 'thumb';
+                if (p.imageUrl) {
+                    const img = document.createElement('img');
+                    img.alt = `${p.title} thumbnail`;
+                    img.loading = 'lazy';
+                    img.src = p.imageUrl;
+                    thumb.appendChild(img);
+                } else {
+                    const no = document.createElement('div');
+                    no.className = 'noimg';
+                    no.textContent = 'No Image';
+                    thumb.appendChild(no);
+                }
+
+                const meta = document.createElement('div');
+                meta.className = 'proj-meta';
+                const title = document.createElement('div');
+                title.className = 'proj-title';
+                title.textContent = p.title || 'Untitled';
+                const desc = document.createElement('div');
+                desc.className = 'proj-desc';
+
+                desc.textContent = p.description || '';
+                meta.appendChild(title);
+                meta.appendChild(desc);
+
+                card.appendChild(thumb);
+                card.appendChild(meta);
+                projectsGrid.appendChild(card);
+            });
+        }
+
+        function selectProject(index) {
+            if (index === state.selectedIndex) {
+                return;
+            }
+            const cards = projectsGrid.querySelectorAll('.proj-card');
+            cards.forEach((c, i) => {
+                c.classList.toggle('active', i === index);
+                c.setAttribute('aria-pressed', String(i === index));
+            });
+            state.selectedIndex = index;
+            const proj = state.projects[index];
+            viewerStatus.textContent = `選択中: ${proj.title}`;
+            btnOpen.disabled = false;
+            btnClose.disabled = !state.iframe;
+        }
+
+        function closeViewer() {
+            if (!state.iframe) {
+                return;
+            }
+            state.iframe.src = 'about:blank';
+            state.iframe.remove();
+            state.iframe = null;
+            viewerStatus.textContent = '閉じました';
+            btnClose.disabled = true;
+        }
+
+        function openSelected() {
+            const idx = state.selectedIndex;
+            if (idx < 0) {
+                return;
+            }
+            const proj = state.projects[idx];
+            if (!proj?.url) {
+                return;
+            }
+            if (state.iframe) {
+                closeViewer();
+            }
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('allow', 'autoplay; fullscreen');
+            iframe.setAttribute('loading', 'eager');
+            iframe.src = proj.url;
+            viewer.appendChild(iframe);
+            state.iframe = iframe;
+            viewerStatus.textContent = `読み込み中: ${proj.title}`;
+
+            const onLoad = () => {
+                viewerStatus.textContent = `表示中: ${proj.title}`;
+                btnClose.disabled = false;
+                iframe.removeEventListener('load', onLoad);
+            };
+            iframe.addEventListener('load', onLoad);
+        }
+
+        btnOpen.addEventListener('click', openSelected);
+        btnClose.addEventListener('click', closeViewer);
+
+        loadProjects();
+    </script>
 </body>
 
 </html>
