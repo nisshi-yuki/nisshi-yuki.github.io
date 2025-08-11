@@ -2,11 +2,13 @@
   {
     "title": "InputMove2D",
     "url": "apps/input_move_2d/index.html",
-    "description": "texts/input_move_2d.txt"
+    "imageUrl":"images/input_move_2d.png",
+    "description": "InputActionを利用した2Dのサンプルです。左右キーでキャラクター移動、スペースキーでジャンプします。"
   },
   {
     "title": "息抜き",
     "url": "apps/story_2d/index.html",
-    "description": "texts/story_2d.txt"
+    "imageUrl":"images/story_2d.png",
+    "description": "UIToolKitを利用したシナリオゲームです。画面クリックで進行します。"
   }
 ]
