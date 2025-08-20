@@ -1,2 +1,3 @@
 copy_*.sh
 localtest.go
+WinBuild/
